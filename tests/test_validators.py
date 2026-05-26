@@ -324,39 +324,47 @@ def test_prepare_risc0_proof_artifacts_writes_manifest_validated_by_final_schema
     receipt = tmp_path / "receipt.bin"
     journal = tmp_path / "journal.bin"
     raw_log = tmp_path / "proof.log"
+    canonical_raw_log = ROOT / "submission" / "raw-logs" / "risc0-proof-generation.log"
+    previous_canonical_raw_log = canonical_raw_log.read_text() if canonical_raw_log.exists() else None
     receipt.write_bytes(b"RISC0 receipt bytes for LP-0003 final lane")
     journal.write_bytes(b"public journal: distribution nullifier recipient_commitment")
     raw_log.write_text("RISC0_DEV_MODE=0\nproof_generation_seconds=9.25\n")
     out_dir = tmp_path / "proof-artifacts"
     manifest = tmp_path / "manifest.json"
 
-    result = run_script(
-        "prepare-risc0-proof-artifacts.py",
-        "--receipt",
-        str(receipt),
-        "--journal",
-        str(journal),
-        "--raw-log",
-        str(raw_log),
-        "--image-id",
-        "ab" * 32,
-        "--command",
-        "RISC0_DEV_MODE=0 cargo run --release -p lp0003-host -- prove-demo",
-        "--out-dir",
-        str(out_dir),
-        "--manifest",
-        str(manifest),
-    )
+    try:
+        result = run_script(
+            "prepare-risc0-proof-artifacts.py",
+            "--receipt",
+            str(receipt),
+            "--journal",
+            str(journal),
+            "--raw-log",
+            str(raw_log),
+            "--image-id",
+            "ab" * 32,
+            "--command",
+            "RISC0_DEV_MODE=0 cargo run --release -p lp0003-host -- prove-demo",
+            "--out-dir",
+            str(out_dir),
+            "--manifest",
+            str(manifest),
+        )
 
-    assert result.returncode == 0, result.stdout
-    data = json.loads(manifest.read_text())
-    assert data["final_proof_evidence"] is True
-    assert data["current_source_sha256"] == current_source_digest()
-    assert Path(data["receipt_path"]).name == "claim.receipt"
-    assert Path(data["journal_path"]).name == "claim.journal"
-    validation = run_script("validate-proof-artifacts.py", str(manifest))
-    assert validation.returncode == 0, validation.stdout
-    assert "PASS proof artifact manifest hash binding" in validation.stdout
+        assert result.returncode == 0, result.stdout
+        data = json.loads(manifest.read_text())
+        assert data["final_proof_evidence"] is True
+        assert data["current_source_sha256"] == current_source_digest()
+        assert Path(data["receipt_path"]).name == "claim.receipt"
+        assert Path(data["journal_path"]).name == "claim.journal"
+        validation = run_script("validate-proof-artifacts.py", str(manifest))
+        assert validation.returncode == 0, validation.stdout
+        assert "PASS proof artifact manifest hash binding" in validation.stdout
+    finally:
+        if previous_canonical_raw_log is None:
+            canonical_raw_log.unlink(missing_ok=True)
+        else:
+            canonical_raw_log.write_text(previous_canonical_raw_log)
 
 
 def test_prepare_risc0_proof_artifacts_allows_raw_log_already_in_submission_path(tmp_path):
