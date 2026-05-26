@@ -56,7 +56,7 @@ The repository ships a local LEZ-shaped program crate and SPEL/IDL fallback arti
 - `query_distribution`
 - `query_claim_nullifier`
 
-The final submission must replace local/safe-lane evidence with raw-log-bound LEZ localnet/testnet evidence showing program id, sequencer context, block/slot inclusion, transaction ids, 2 distinct distributions, 20 unique claims, and duplicate-nullifier rejection.
+The final submission must replace local/safe-lane evidence with raw-log-bound LEZ localnet/testnet evidence showing program id, sequencer context, block/slot inclusion, transaction ids, 2 distinct distributions, 20 unique claims, duplicate-nullifier rejection, and the exact public data an on-chain observer can see.
 
 ### Basecamp integration
 
@@ -104,7 +104,7 @@ The final proof lane must provide fresh `RISC0_DEV_MODE=0` proof artifacts for t
 - [ ] CI is green on the public default branch.
 - [ ] Reproducible real local sequencer demo with `RISC0_DEV_MODE=0` passes.
 - [ ] Narrated builder demo video URL attached.
-- [ ] Logos technology issues are linked, or a final-run no-issues attestation is attached.
+- [ ] Logos technology issues: GitHub issues for Logos technology problems are linked, or a final-run no-issues attestation is attached.
 
 ## FURPS Self-Assessment
 
@@ -142,7 +142,10 @@ The repo includes a strict safe-lane CI, final-publication checker, evidence ext
 - `scripts/extract-lez-claim-evidence.py` — LEZ/RISC0 2-distribution / 20-claim evidence extractor.
 - `scripts/extract-proof-benchmark.py` — raw-log-bound proof timing benchmark extractor.
 - `scripts/extract-lez-cost-benchmark.py` — raw-log-bound LEZ CU/cost benchmark extractor.
+- `scripts/prepare-risc0-proof-artifacts.py` — packages externally generated RISC0_DEV_MODE=0 receipt/journal output into the final hash-bound manifest.
 - `scripts/validate-proof-artifacts.py` — RISC0 proof artifact validator.
+- `scripts/final-recording-preflight.py` — validates that the narrated recording workflow covers all LP-0003 final evidence scenes and safety gates.
+- `scripts/validate-upstream-solution.py` — lambda-prize solution-template and LP-0003 structural simulation before opening the upstream PR.
 
 ## Terms & Conditions
 

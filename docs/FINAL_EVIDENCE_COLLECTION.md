@@ -71,9 +71,16 @@ Placeholder/pending/old cross-prize URLs are rejected.
 
 ## Proof artifact and benchmark evidence
 
-Before the final checker can pass, proof artifacts must be hash-bound and fresh for the current source:
+Before the final checker can pass, proof artifacts must be hash-bound and fresh for the current source. Package externally generated `RISC0_DEV_MODE=0` receipt/journal output with:
 
 ```bash
+python3 scripts/prepare-risc0-proof-artifacts.py \
+  --receipt path/to/claim.receipt \
+  --journal path/to/claim.journal \
+  --raw-log path/to/risc0-proof-generation.log \
+  --image-id <64+ hex chars> \
+  --command 'RISC0_DEV_MODE=0 cargo run --release -p lp0003-host -- prove-demo'
+
 python3 scripts/validate-proof-artifacts.py submission/proof-artifacts/manifest.json
 ```
 
@@ -82,6 +89,7 @@ Minimum proof manifest fields:
 - `final_proof_evidence: true`
 - `risc0_dev_mode: 0`
 - `fresh_for_current_source: true`
+- `current_source_sha256` matching the tracked source digest
 - `image_id`
 - `receipt_path` / `receipt_sha256`
 - `journal_path` / `journal_sha256`
@@ -146,11 +154,24 @@ The upstream LP-0003 submission requirements ask for GitHub issues opened for pr
 
 A vague prose note is intentionally rejected.
 
+## Upstream solution template simulation
+
+Before recording/opening the upstream PR, run the recording preflight and a local structural simulation against the lambda-prize solution template and LP-0003-specific text requirements:
+
+```bash
+python3 scripts/final-recording-preflight.py
+python3 scripts/validate-upstream-solution.py --allow-do-not-submit
+```
+
+The final upstream file must remove the local `DO NOT SUBMIT` banner, at which point the same script should pass without `--allow-do-not-submit`.
+
 ## Final verification
 
 After attaching any evidence, run:
 
 ```bash
+python3 scripts/final-recording-preflight.py
+python3 scripts/validate-upstream-solution.py --allow-do-not-submit
 python3 scripts/final-publication-check.py
 bash scripts/ci-safe-lane.sh
 ```

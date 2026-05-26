@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,8 +41,21 @@ else:
     print('PENDING core relation implementation')
     failures.append('core relation implementation')
 
-if (ROOT / 'submission' / 'proof-artifacts' / 'manifest.json').exists():
-    print('PASS RISC0 proof artifacts')
+manifest = ROOT / 'submission' / 'proof-artifacts' / 'manifest.json'
+if manifest.exists():
+    proof_result = subprocess.run(
+        ['python3', str(ROOT / 'scripts' / 'validate-proof-artifacts.py'), str(manifest)],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    if proof_result.returncode == 0:
+        print('PASS RISC0 proof artifacts')
+    else:
+        print('PENDING RISC0 proof artifacts')
+        failures.append('RISC0 proof artifacts')
 else:
     print('PENDING RISC0 proof artifacts')
     failures.append('RISC0 proof artifacts')

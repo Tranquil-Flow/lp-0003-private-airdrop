@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import subprocess
 from pathlib import Path
@@ -212,11 +213,21 @@ def test_final_publication_rejects_bool_only_proof_manifest(tmp_path):
             manifest.write_text(previous)
 
 
+def current_source_digest() -> str:
+    validator_path = ROOT / "scripts" / "validate-proof-artifacts.py"
+    spec = importlib.util.spec_from_file_location("lp0003_validate_proof_artifacts_for_tests", validator_path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module.current_source_digest()
+
+
 def test_validate_proof_artifacts_rejects_missing_receipt_and_journal(tmp_path):
     manifest = tmp_path / "manifest.json"
     manifest.write_text(
         '{"final_proof_evidence": true, "risc0_dev_mode": 0, '
-        '"fresh_for_current_source": true, "image_id": "' + 'ab' * 32 + '", '
+        '"fresh_for_current_source": true, "current_source_sha256": "' + current_source_digest() + '", '
+        '"image_id": "' + 'ab' * 32 + '", '
         '"receipt_path": "submission/proof-artifacts/missing.receipt", '
         '"journal_path": "submission/proof-artifacts/missing.journal", '
         '"receipt_sha256": "' + '0' * 64 + '", '
@@ -247,6 +258,7 @@ def test_validate_proof_artifacts_accepts_hash_bound_synthetic_schema(tmp_path):
                 "final_proof_evidence": True,
                 "risc0_dev_mode": 0,
                 "fresh_for_current_source": True,
+                "current_source_sha256": current_source_digest(),
                 "image_id": "ab" * 32,
                 "receipt_path": str(receipt),
                 "journal_path": str(journal),
@@ -262,3 +274,154 @@ def test_validate_proof_artifacts_accepts_hash_bound_synthetic_schema(tmp_path):
 
     assert result.returncode == 0, result.stdout
     assert "PASS proof artifact manifest hash binding" in result.stdout
+
+
+
+def test_validate_proof_artifacts_rejects_stale_source_digest(tmp_path):
+    import hashlib
+    receipt = tmp_path / "claim.receipt"
+    journal = tmp_path / "claim.journal"
+    receipt.write_bytes(b"real receipt shaped bytes")
+    journal.write_bytes(b"public journal bytes")
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "final_proof_evidence": True,
+                "risc0_dev_mode": 0,
+                "fresh_for_current_source": True,
+                "current_source_sha256": "0" * 64,
+                "image_id": "ab" * 32,
+                "receipt_path": str(receipt),
+                "journal_path": str(journal),
+                "receipt_sha256": hashlib.sha256(receipt.read_bytes()).hexdigest(),
+                "journal_sha256": hashlib.sha256(journal.read_bytes()).hexdigest(),
+                "command": "RISC0_DEV_MODE=0 cargo run --release --bin lp0003-prove",
+            }
+        )
+        + "\n"
+    )
+
+    result = run_script("validate-proof-artifacts.py", str(manifest))
+
+    assert result.returncode == 1
+    assert "stale for current source digest" in result.stdout
+
+
+def test_prepare_risc0_proof_artifacts_writes_manifest_validated_by_final_schema(tmp_path):
+    receipt = tmp_path / "receipt.bin"
+    journal = tmp_path / "journal.bin"
+    raw_log = tmp_path / "proof.log"
+    receipt.write_bytes(b"RISC0 receipt bytes for LP-0003 final lane")
+    journal.write_bytes(b"public journal: distribution nullifier recipient_commitment")
+    raw_log.write_text("RISC0_DEV_MODE=0\nproof_generation_seconds=9.25\n")
+    out_dir = tmp_path / "proof-artifacts"
+    manifest = tmp_path / "manifest.json"
+
+    result = run_script(
+        "prepare-risc0-proof-artifacts.py",
+        "--receipt",
+        str(receipt),
+        "--journal",
+        str(journal),
+        "--raw-log",
+        str(raw_log),
+        "--image-id",
+        "ab" * 32,
+        "--command",
+        "RISC0_DEV_MODE=0 cargo run --release -p lp0003-host -- prove-demo",
+        "--out-dir",
+        str(out_dir),
+        "--manifest",
+        str(manifest),
+    )
+
+    assert result.returncode == 0, result.stdout
+    data = json.loads(manifest.read_text())
+    assert data["final_proof_evidence"] is True
+    assert data["current_source_sha256"] == current_source_digest()
+    assert Path(data["receipt_path"]).name == "claim.receipt"
+    assert Path(data["journal_path"]).name == "claim.journal"
+    validation = run_script("validate-proof-artifacts.py", str(manifest))
+    assert validation.returncode == 0, validation.stdout
+    assert "PASS proof artifact manifest hash binding" in validation.stdout
+
+
+def test_prepare_risc0_proof_artifacts_rejects_non_final_command(tmp_path):
+    receipt = tmp_path / "receipt.bin"
+    journal = tmp_path / "journal.bin"
+    receipt.write_bytes(b"receipt")
+    journal.write_bytes(b"journal")
+
+    result = run_script(
+        "prepare-risc0-proof-artifacts.py",
+        "--receipt",
+        str(receipt),
+        "--journal",
+        str(journal),
+        "--image-id",
+        "ab" * 32,
+        "--command",
+        "cargo run --release -p lp0003-host -- prove-demo",
+    )
+
+    assert result.returncode == 1
+    assert "RISC0_DEV_MODE=0" in result.stdout
+
+
+def test_upstream_solution_simulation_passes_draft_in_safety_mode():
+    result = run_script("validate-upstream-solution.py", "--allow-do-not-submit")
+    assert result.returncode == 0, result.stdout
+    assert "LP-0003 upstream solution simulation: PASS" in result.stdout
+
+
+def test_upstream_solution_simulation_rejects_local_safety_banner_without_override():
+    result = run_script("validate-upstream-solution.py")
+    assert result.returncode == 1
+    assert "DO NOT SUBMIT" in result.stdout
+
+
+
+def test_final_recording_preflight_passes_workflow_without_final_evidence():
+    result = run_script("final-recording-preflight.py")
+    assert result.returncode == 0, result.stdout
+    assert "LP-0003 final recording preflight: PASS" in result.stdout
+
+
+def test_attach_final_demo_video_rejects_placeholder_and_supported_url(tmp_path):
+    bad = run_script("attach-final-demo-video.py", "https://youtu.be/pending-lp0003-demo")
+    assert bad.returncode == 1
+    assert "placeholder" in bad.stdout
+
+    pr_draft = ROOT / "submission" / "PR_DRAFT.md"
+    previous = pr_draft.read_text()
+    try:
+        good = run_script("attach-final-demo-video.py", "https://youtu.be/lp0003-final-demo-evidence")
+        assert good.returncode == 0, good.stdout
+        updated = pr_draft.read_text()
+        assert "- **Narrated demo:** https://youtu.be/lp0003-final-demo-evidence" in updated
+        final = run_script("final-publication-check.py")
+        assert final.returncode == 1
+        assert "PASS narrated demo video URL" in final.stdout
+        assert "BLOCKER Basecamp-loadable app evidence" in final.stdout
+    finally:
+        pr_draft.write_text(previous)
+
+
+def test_final_publication_accepts_explicit_logos_no_issues_attestation_but_keeps_other_gates():
+    issues = ROOT / "submission" / "LOGOS_TECH_ISSUES.md"
+    previous = issues.read_text() if issues.exists() else None
+    issues.write_text(
+        "# Logos Technology Issues\n\n"
+        "No Logos technology issues were encountered during the LP-0003 final run.\n"
+    )
+    try:
+        result = run_script("final-publication-check.py")
+        assert result.returncode == 1
+        assert "PASS Logos technology issue report" in result.stdout
+        assert "BLOCKER fresh RISC0_DEV_MODE=0 proof artifacts" in result.stdout
+    finally:
+        if previous is None:
+            issues.unlink(missing_ok=True)
+        else:
+            issues.write_text(previous)

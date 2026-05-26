@@ -711,3 +711,10 @@ Mitigations:
 ## 11. Immediate Next Step
 
 Start with Phase 0 and Phase 1. The first concrete deliverable should be a scaffolded workspace whose validators fail honestly, followed by a pure Rust relation with privacy-boundary tests. Once that moonlit core is correct, the RISC0/LEZ/Basecamp layers can be woven around it without pretending the spell is complete before it is.
+
+
+## Added final-proof publication guardrails
+
+- `scripts/prepare-risc0-proof-artifacts.py` packages real externally generated `RISC0_DEV_MODE=0` receipt/journal/log artifacts into `submission/proof-artifacts/manifest.json` without fabricating evidence.
+- `scripts/validate-proof-artifacts.py` now requires `current_source_sha256`, so stale proof manifests fail after source changes.
+- `scripts/validate-upstream-solution.py` simulates the upstream lambda-prize solution-template checks before any public PR is opened.

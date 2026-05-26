@@ -28,6 +28,9 @@ python3 scripts/package-basecamp-lgx.py
 python3 scripts/validate-basecamp-native.py
 pause "$SCENE_PAUSE"
 
+section "Recording preflight"
+python3 scripts/final-recording-preflight.py
+
 section "Final evidence runbook"
-printf 'Final recording must add real Basecamp runtime load, RISC0_DEV_MODE=0 proof artifacts, and LEZ localnet/testnet logs.\n'
+printf 'Final recording must add real Basecamp runtime load, RISC0_DEV_MODE=0 proof artifacts, LEZ localnet/testnet logs, proof-generation benchmarks, compute-unit benchmarks, and Logos technology issue reporting.\n'
 printf 'See docs/FINAL_EVIDENCE_COLLECTION.md for extractor commands.\n'

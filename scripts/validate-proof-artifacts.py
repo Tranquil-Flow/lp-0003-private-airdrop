@@ -4,11 +4,14 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_MARKERS = [b"RISC0_DEV_MODE=1", b"safe-lane", b"SAFE_LANE", b"mock proof", b"dev-mode"]
+SOURCE_INCLUDE_PREFIXES = ("core/", "lez-program/", "sdk/", "cli/", "consumer-demo/", "interfaces/", "basecamp-app/")
+SOURCE_INCLUDE_FILES = {"Cargo.toml", "Cargo.lock", "README.md", "module.json", "demo.sh"}
 
 
 def sha256_file(path: Path) -> str:
@@ -16,6 +19,38 @@ def sha256_file(path: Path) -> str:
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
+    return h.hexdigest()
+
+
+
+def iter_source_files() -> list[Path]:
+    try:
+        result = subprocess.run(
+            ["git", "ls-files"],
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+        rels = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    except Exception:
+        rels = [str(p.relative_to(ROOT)) for p in ROOT.rglob("*") if p.is_file()]
+    selected = []
+    for rel in rels:
+        if rel in SOURCE_INCLUDE_FILES or rel.startswith(SOURCE_INCLUDE_PREFIXES):
+            path = ROOT / rel
+            if path.exists() and path.is_file():
+                selected.append(path)
+    return sorted(selected, key=lambda p: str(p.relative_to(ROOT)))
+
+
+def current_source_digest() -> str:
+    h = hashlib.sha256()
+    for path in iter_source_files():
+        rel = str(path.relative_to(ROOT))
+        h.update(rel.encode("utf-8") + b"\0")
+        h.update(sha256_file(path).encode("ascii") + b"\0")
     return h.hexdigest()
 
 
@@ -46,6 +81,11 @@ def validate(manifest_path: Path) -> tuple[bool, str]:
         return False, "manifest must record risc0_dev_mode=0"
     if data.get("fresh_for_current_source") is not True:
         return False, "manifest must be fresh_for_current_source=true"
+    expected_source = data.get("current_source_sha256")
+    if not isinstance(expected_source, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_source):
+        return False, "current_source_sha256 missing or malformed"
+    if expected_source != current_source_digest():
+        return False, "manifest is stale for current source digest"
     if not re.fullmatch(r"[0-9A-Fa-f]{64,}", str(data.get("image_id", ""))):
         return False, "image_id missing or malformed"
     if "RISC0_DEV_MODE=0" not in str(data.get("command", "")):
