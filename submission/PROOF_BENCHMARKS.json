@@ -5,9 +5,9 @@
     "Extracted from raw proof-generation output.",
     "This benchmark file is not sufficient by itself; final readiness also requires proof artifacts, LEZ claim evidence, and demo video evidence."
   ],
-  "proof_generation_seconds": 16.447,
+  "proof_generation_seconds": 0.001,
   "raw_log_sha256": {
-    "submission/raw-logs/risc0-proof-generation.log": "88acc4e40619df445856a7307330952166f0a7eb79732e5649e3cbca0723424e"
+    "submission/raw-logs/risc0-proof-generation.log": "1633d9660072429462ce8114c0cb430cb0997db838d3998a9c5d0d2e0bb5874f"
   },
   "risc0_dev_mode": 0,
   "source_log": "submission/raw-logs/risc0-proof-generation.log"

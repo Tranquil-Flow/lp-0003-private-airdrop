@@ -97,21 +97,25 @@ def test_extract_lez_claim_evidence_accepts_two_distribution_twenty_claim_runtim
     claims_path = ROOT / "submission" / "claims" / "claims-summary.json"
     previous = claims_path.read_text() if claims_path.exists() else None
     raw_log = tmp_path / "lez-risc0-localnet.log"
+    dist_a = "a1" * 32
+    dist_b = "b2" * 32
     lines = [
         "evidence_source: lez-risc0-localnet",
         "RISC0_DEV_MODE=0",
         "program_id: 9f" + "01" * 31,
         "sequencer_url: http://127.0.0.1:3040",
         "block: 1735",
-        "transaction: tx-create-a",
-        "create_distribution distribution_id: dist-a",
-        "transaction: tx-create-b",
-        "create_distribution distribution_id: dist-b",
+        "transaction: " + "c0" * 32,
+        f"create_distribution distribution_id: {dist_a}",
+        "transaction: " + "c1" * 32,
+        f"create_distribution distribution_id: {dist_b}",
     ]
     for i in range(20):
-        dist = "dist-a" if i < 10 else "dist-b"
-        lines.append(f"transaction: tx-claim-{i:02d} claim accepted distribution_id: {dist} nullifier: nf-{i:02d}")
-    lines.append("transaction: tx-dup duplicate nullifier rejected distribution_id: dist-a nullifier: nf-00")
+        dist = dist_a if i < 10 else dist_b
+        tx = f"{i + 1:064x}"
+        nullifier = f"{1000 + i:064x}"
+        lines.append(f"transaction: {tx} claim accepted distribution_id: {dist} nullifier: {nullifier}")
+    lines.append(f"transaction: {'d0' * 32} duplicate nullifier rejected distribution_id: {dist_a} nullifier: {1000:064x}")
     raw_log.write_text("\n".join(lines) + "\n")
 
     try:
@@ -129,6 +133,31 @@ def test_extract_lez_claim_evidence_accepts_two_distribution_twenty_claim_runtim
     finally:
         restore_file(claims_path, previous)
 
+
+
+def test_extract_lez_claim_evidence_rejects_label_transactions_even_if_counts_match(tmp_path):
+    raw_log = tmp_path / "toy-lez.log"
+    lines = [
+        "evidence_source: lez-risc0-localnet",
+        "RISC0_DEV_MODE=0",
+        "program_id: 9f" + "01" * 31,
+        "sequencer_url: http://127.0.0.1:3040",
+        "block: 1735",
+        "transaction: tx-create-a",
+        "create_distribution distribution_id: " + "a1" * 32,
+        "transaction: tx-create-b",
+        "create_distribution distribution_id: " + "b2" * 32,
+    ]
+    for i in range(20):
+        dist = "a1" * 32 if i < 10 else "b2" * 32
+        lines.append(f"transaction: tx-claim-{i:02d} claim accepted distribution_id: {dist} nullifier: {1000 + i:064x}")
+    lines.append("transaction: tx-dup duplicate nullifier rejected distribution_id: " + "a1" * 32 + f" nullifier: {1000:064x}")
+    raw_log.write_text("\n".join(lines) + "\n")
+
+    result = run_script("extract-lez-claim-evidence.py", str(raw_log))
+
+    assert result.returncode == 1
+    assert "transaction ids must be real hash-like" in result.stdout
 
 def test_attach_final_demo_video_rejects_pending_or_old_placeholder_urls(tmp_path):
     result = run_script("attach-final-demo-video.py", "https://youtu.be/DEMO_PENDING")

@@ -67,6 +67,17 @@ def main(argv: list[str]) -> int:
     source_match = re.search(r"evidence_source\s*[:=]\s*(lez-risc0-localnet|lez-risc0-testnet)", text)
     if not source_match:
         return fail("missing evidence_source: lez-risc0-localnet or lez-risc0-testnet")
+    if not re.search(r"\bsequencer_url\s*[:=]\s*https?://\S+", text, flags=re.IGNORECASE):
+        return fail("missing sequencer_url context")
+    if not re.search(r"\b(block|slot)\s*[:=]\s*\d+", text, flags=re.IGNORECASE):
+        return fail("missing block/slot inclusion context")
+    tx_token = r"(?:0x)?[0-9A-Fa-f]{32,128}|[1-9A-HJ-NP-Za-km-z]{32,128}"
+    transactions = re.findall(r"\btransaction\s*[:=]\s*(\S+)", text, flags=re.IGNORECASE)
+    if not transactions:
+        return fail("missing transaction context")
+    invalid_txs = [tx for tx in transactions if not re.fullmatch(tx_token, tx)]
+    if invalid_txs:
+        return fail("transaction ids must be real hash-like localnet/testnet ids, not labels: " + ", ".join(invalid_txs[:3]))
 
     operations = [op for line in text.splitlines() if (op := parse_operation(line)) is not None]
     op_names = {op.get("operation") for op in operations}

@@ -1,14 +1,21 @@
 {
-  "command": "RISC0_DEV_MODE=0 cargo run --manifest-path host/Cargo.toml --release --bin lp0003-risc0-prove-fixture -- target/lp0003-risc0-final",
-  "current_source_sha256": "6bb1bc070731d72cd1cac00444aa62349a75b69d1429d321f9be75404072f206",
+  "command": "RISC0_DEV_MODE=0 RISC0_PROVER=ipc cargo run --manifest-path host/Cargo.toml --bin lp0003-risc0-prove-fixture -- target/lp0003-risc0-final",
+  "current_source_file_count": 59,
+  "current_source_sha256": "21fd9ed0d9e845be9b453672c6fc2d1535507f7bcb1ff4d8fca7e7f1f6321cd0",
   "final_proof_evidence": true,
   "fresh_for_current_source": true,
-  "honesty_note": "Generated on m4pro with RISC0_DEV_MODE=0; receipt/journal copied from target/lp0003-risc0-final.",
   "image_id": "ac01d872f551bbaf825740825d7cc1f135e9cd8992cf221b775863abf5062033",
   "journal_path": "submission/proof-artifacts/claim.journal",
   "journal_sha256": "a14578a4d90fe59b6de04393cc2d19c6781942acefd785641db5697d31046ab1",
-  "raw_log": "submission/raw-logs/risc0-final-prove.log",
+  "notes": [
+    "Prepared from externally generated RISC0_DEV_MODE=0 proof artifacts.",
+    "The manifest is bound to the current tracked source digest and to receipt/journal SHA-256 hashes."
+  ],
+  "raw_log_path": "submission/raw-logs/risc0-proof-generation.log",
+  "raw_log_sha256": {
+    "submission/raw-logs/risc0-proof-generation.log": "1633d9660072429462ce8114c0cb430cb0997db838d3998a9c5d0d2e0bb5874f"
+  },
   "receipt_path": "submission/proof-artifacts/claim.receipt",
-  "receipt_sha256": "f05eb8fb8eed1e4a25642e0f1d2ea2fab0e1ea3acec0f30b5c73a2824a32cb0c",
+  "receipt_sha256": "3c0b34f4175f9880aa44ea9550c1204499e36efaa16820e17a8fc040630ba2ad",
   "risc0_dev_mode": 0
 }

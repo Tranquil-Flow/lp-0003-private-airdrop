@@ -43,6 +43,8 @@ def main(argv: list[str]) -> int:
     runtime_hits = [s for s in runtime_signals if s in lowered]
 
     component_match = re.search(r"loaded_component_id\s*[:=]\s*([A-Za-z0-9_.:-]+)", text)
+    if "lp0003" not in lowered and "private-airdrop" not in lowered and "private_airdrop" not in lowered:
+        return fail("runtime log does not identify the LP-0003 Basecamp component")
     if not runtime_hits or not component_match:
         if has_install:
             return fail("install/package-only evidence is not runtime load evidence")

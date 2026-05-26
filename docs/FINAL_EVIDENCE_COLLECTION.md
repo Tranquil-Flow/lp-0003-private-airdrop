@@ -45,6 +45,7 @@ Expected signals:
 - at least two distribution ids
 - at least twenty unique accepted claim nullifiers
 - at least one duplicate-nullifier rejection
+- hash-like transaction ids and public identifiers from LEZ localnet/testnet output; toy labels such as `tx-claim-00`, `dist-a`, or `nf-00` are rejected even if the counts are correct
 
 Command:
 
@@ -140,6 +141,9 @@ The raw log should include one `operation:` line per measured operation, for exa
 ```text
 evidence_source: lez-risc0-localnet
 sequencer_url: http://127.0.0.1:3040
+block: 1735
+transaction: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+transaction: fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210
 operation: create_distribution tx_count=2 cu_unavailable_reason=LEZ RPC did not expose per-transaction CU counters
 operation: claim tx_count=20 cu_per_tx=12345
 ```
@@ -150,6 +154,7 @@ Minimum fields in the extracted JSON:
 - `evidence_source: lez-risc0-localnet` or `lez-risc0-testnet`
 - `operations[]` with `operation`, `tx_count`, and either `cu_per_tx` or `cu_metering_available: false` plus `cu_unavailable_reason`
 - `raw_log_sha256` pointing at the raw LEZ benchmark log
+- raw log inclusion context: `sequencer_url`, `block` or `slot`, and 32+ byte hash-like `transaction:` ids (label-only ids such as `tx-claim-00` are intentionally rejected)
 
 Do not invent CU numbers. If the current LEZ surface lacks stable per-transaction CU counters, record the exact unavailable rationale, plus payload sizes, transaction ids, block/slot ids, and sequencer version in the raw log.
 
