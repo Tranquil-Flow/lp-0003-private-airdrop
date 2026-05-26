@@ -1,7 +1,7 @@
 {
   "command": "RISC0_DEV_MODE=0 RISC0_PROVER=ipc cargo run --manifest-path host/Cargo.toml --bin lp0003-risc0-prove-fixture -- target/lp0003-risc0-final",
   "current_source_file_count": 59,
-  "current_source_sha256": "21fd9ed0d9e845be9b453672c6fc2d1535507f7bcb1ff4d8fca7e7f1f6321cd0",
+  "current_source_sha256": "94eafce5eb960ca545b8bb146b4ba3c05e9716ee5361df5bb950cfadaf478071",
   "final_proof_evidence": true,
   "fresh_for_current_source": true,
   "image_id": "ac01d872f551bbaf825740825d7cc1f135e9cd8992cf221b775863abf5062033",
@@ -13,9 +13,9 @@
   ],
   "raw_log_path": "submission/raw-logs/risc0-proof-generation.log",
   "raw_log_sha256": {
-    "submission/raw-logs/risc0-proof-generation.log": "1633d9660072429462ce8114c0cb430cb0997db838d3998a9c5d0d2e0bb5874f"
+    "submission/raw-logs/risc0-proof-generation.log": "a7f0b965bc587b7c0d2e002e956ef5dd4987663a0d67ae112eecb0ea2bbf2b8d"
   },
   "receipt_path": "submission/proof-artifacts/claim.receipt",
-  "receipt_sha256": "3c0b34f4175f9880aa44ea9550c1204499e36efaa16820e17a8fc040630ba2ad",
+  "receipt_sha256": "89a7b2325a98c163310b387f49cb3d9b08dacbe08b678ef7729af1b0928634cf",
   "risc0_dev_mode": 0
 }

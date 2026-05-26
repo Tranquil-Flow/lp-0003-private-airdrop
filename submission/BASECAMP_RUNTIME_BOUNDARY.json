@@ -1,0 +1,17 @@
+{
+  "status": "runtime-boundary-not-final-load-evidence",
+  "final_load_evidence": false,
+  "component_id": "lp0003_private_airdrop",
+  "raw_log_path": "submission/raw-logs/basecamp-runtime-boundary.log",
+  "raw_log_sha256": "04a8dca693808b444294498b31016bb76a55b7476cc9b2da1d6fb637101d3473",
+  "lgx_path": "dist/lp0003-private-airdrop.lgx",
+  "lgx_sha256": "4c2fab9c23909124df70717e1530c9f0e39413617f344283721abb132184917b",
+  "plugin_path": "basecamp-app/build/liblp0003_private_airdrop.so",
+  "plugin_sha256": "33df2d03b41215da65155f35d3ef4a19e1a72ca6a895eab0da215c0ca0394da7",
+  "observed_boundary": "logos_host outside an authenticated Basecamp session returned: [critical] Timeout waiting for auth token",
+  "notes": [
+    "Basecamp application and logos_host are installed/running on the M4 Pro.",
+    "The LP-0003 native/QML plugin builds successfully and the deterministic .lgx package validates.",
+    "Direct logos_host probing is not equivalent to Basecamp runtime activation; final evidence remains blocked until authenticated Basecamp package load/activation logs name lp0003_private_airdrop."
+  ]
+}

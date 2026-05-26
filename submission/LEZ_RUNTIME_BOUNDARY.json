@@ -1,0 +1,26 @@
+{
+  "deploy_status": "submitted",
+  "evidence_source": "lez-risc0-localnet",
+  "final_claim_evidence": false,
+  "final_cost_evidence": false,
+  "missing_for_final": [
+    "hash-like transaction ids for create_distribution and claim invocations",
+    "block/slot-bound accepted claims across at least 2 distributions and 20 unique nullifiers",
+    "duplicate-nullifier rejection transaction evidence",
+    "chain-native CU/cost telemetry or explicit unavailable marker attached to real operation txs"
+  ],
+  "observed_boundary": "lgs deploy can submit the RISC0 guest image, but this repo does not yet have a real LEZ/SPEL/NSSA invocation adapter for create_distribution/claim transactions or per-transaction CU telemetry.",
+  "program": "claim_proof",
+  "program_id": "ac01d872f551bbaf825740825d7cc1f135e9cd8992cf221b775863abf5062033",
+  "raw_log_sha256": {
+    "submission/raw-logs/lez-deployment-probe.log": "1811958f999aee13ef3b4e5ceb230a3842e6c179ffe1cb3fac64dd154af4c520",
+    "submission/raw-logs/lez-extractor-boundary.log": "bbc7e9e50d5a7dd8aa3a0242010b5f2a19e1ff7981a2004defb11c46100f352a"
+  },
+  "raw_logs": [
+    "submission/raw-logs/lez-deployment-probe.log",
+    "submission/raw-logs/lez-extractor-boundary.log"
+  ],
+  "risc0_dev_mode": 0,
+  "sequencer_url": "http://127.0.0.1:3040",
+  "status": "lez-deployment-probe-only-not-final-claim-or-cost-evidence"
+}

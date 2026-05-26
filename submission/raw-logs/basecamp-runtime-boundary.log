@@ -1,0 +1,116 @@
+LP-0003 Basecamp runtime boundary evidence
+Tue May 26 20:40:12 UTC 2026
+repo=/Users/evinova-self/Projects/logos-basecamp/lp-0003-private-airdrop
+validate native package:
+wrote /Users/evinova-self/Projects/logos-basecamp/lp-0003-private-airdrop/dist/lp0003-private-airdrop.lgx
+sha256 4c2fab9c23909124df70717e1530c9f0e39413617f344283721abb132184917b
+status source-package-only-not-load-evidence
+NOTE: this is not final Basecamp runtime load evidence
+PASS Basecamp native/QML source package
+PASS deterministic .lgx source package
+NOT final Basecamp load evidence: runtime load log still required
+logos basecamp app candidates:
+ls: /Applications/Logos Basecamp.app: No such file or directory
+drwxr-xr-x@ 3 evinova-self  admin  96 May  5 00:18 /Applications/LogosBasecamp.app
+logos_host candidates:
+/Applications/LogosBasecamp.app
+/Applications/LogosBasecamp.app/Contents
+/Applications/LogosBasecamp.app/Contents/CodeResources
+/Applications/LogosBasecamp.app/Contents/_CodeSignature
+/Applications/LogosBasecamp.app/Contents/_CodeSignature/CodeResources
+/Applications/LogosBasecamp.app/Contents/_CodeSignature/CodeDirectory
+/Applications/LogosBasecamp.app/Contents/_CodeSignature/CodeRequirements-1
+/Applications/LogosBasecamp.app/Contents/_CodeSignature/CodeSignature
+/Applications/LogosBasecamp.app/Contents/_CodeSignature/CodeRequirements
+/Applications/LogosBasecamp.app/Contents/MacOS
+/Applications/LogosBasecamp.app/Contents/MacOS/ui-host
+/Applications/LogosBasecamp.app/Contents/MacOS/LogosBasecamp
+/Applications/LogosBasecamp.app/Contents/MacOS/LogosBasecamp.bin
+/Applications/LogosBasecamp.app/Contents/MacOS/logos_host
+/Applications/LogosBasecamp.app/Contents/plugins
+/Applications/LogosBasecamp.app/Contents/plugins/main_ui
+/Applications/LogosBasecamp.app/Contents/plugins/main_ui/main_ui.dylib
+/Applications/LogosBasecamp.app/Contents/plugins/main_ui/manifest.json
+/Applications/LogosBasecamp.app/Contents/plugins/main_ui/variant
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/package_manager_ui_plugin.dylib
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/qml
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/qml/PackageManager.qml
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/package_manager_ui_replica_factory.dylib
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/metadata.json
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/icons
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/icons/modules.png
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/modules.png
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/manifest.json
+/Applications/LogosBasecamp.app/Contents/plugins/package_manager_ui/variant
+/Applications/LogosBasecamp.app/Contents/plugins/counter
+/Applications/LogosBasecamp.app/Contents/plugins/counter/counter_plugin.dylib
+/Applications/LogosBasecamp.app/Contents/plugins/counter/qml
+/Applications/LogosBasecamp.app/Contents/plugins/counter/qml/Counter.qml
+/Applications/LogosBasecamp.app/Contents/plugins/counter/counter.png
+/Applications/LogosBasecamp.app/Contents/plugins/counter/metadata.json
+/Applications/LogosBasecamp.app/Contents/plugins/counter/counter_replica_factory.dylib
+/Applications/LogosBasecamp.app/Contents/plugins/counter/icons
+/Applications/LogosBasecamp.app/Contents/plugins/counter/icons/counter.png
+/Applications/LogosBasecamp.app/Contents/plugins/counter/manifest.json
+/Applications/LogosBasecamp.app/Contents/plugins/counter/variant
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/qml
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/qml/WebView.qml
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/qml/Resources.js
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/metadata.json
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/webview.png
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/icons
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/icons/webview.png
+/Applications/LogosBasecamp.app/Contents/plugins/webview_app/manifest.json
+running processes:
+38539 /Applications/LogosBasecamp.app/Contents/MacOS/LogosBasecamp.bin
+38544 /Applications/LogosBasecamp.app/Contents/MacOS/logos_host --name capability_module --path /Applications/LogosBasecamp.app/Contents/modules/capability_module/capability_module_plugin.dylib --instance-persistence-path /Users/evinova-self/Library/Application Support/Logos/LogosBasecamp/module_data/capability_module/475e2a5a3032
+38545 /Applications/LogosBasecamp.app/Contents/MacOS/logos_host --name package_manager --path /Applications/LogosBasecamp.app/Contents/modules/package_manager/package_manager_plugin.dylib --instance-persistence-path /Users/evinova-self/Library/Application Support/Logos/LogosBasecamp/module_data/package_manager/f2b367fb3b85
+build plugin if possible:
+-- Configuring done (0.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/evinova-self/Projects/logos-basecamp/lp-0003-private-airdrop/basecamp-app/build
+[100%] Built target lp0003_private_airdrop
+plugin files:
+basecamp-app/build/.qt/QtDeploySupport.cmake
+basecamp-app/build/.qt/QtDeployTargets.cmake
+basecamp-app/build/CMakeCache.txt
+basecamp-app/build/CMakeFiles/4.3.2/CMakeCXXCompiler.cmake
+basecamp-app/build/CMakeFiles/4.3.2/CMakeDetermineCompilerABI_CXX.bin
+basecamp-app/build/CMakeFiles/4.3.2/CMakeSystem.cmake
+basecamp-app/build/CMakeFiles/4.3.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
+basecamp-app/build/CMakeFiles/4.3.2/CompilerIdCXX/a.out
+basecamp-app/build/CMakeFiles/4.3.2/CompilerIdCXX/apple-sdk.cpp
+basecamp-app/build/CMakeFiles/CMakeConfigureLog.yaml
+basecamp-app/build/CMakeFiles/CMakeDirectoryInformation.cmake
+basecamp-app/build/CMakeFiles/CMakeRuleHashes.txt
+basecamp-app/build/CMakeFiles/InstallScripts.json
+basecamp-app/build/CMakeFiles/Makefile.cmake
+basecamp-app/build/CMakeFiles/Makefile2
+basecamp-app/build/CMakeFiles/TargetDirectories.txt
+basecamp-app/build/CMakeFiles/cmake.check_cache
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/DependInfo.cmake
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/build.make
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/cmake_clean.cmake
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/compiler_depend.internal
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/compiler_depend.make
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/compiler_depend.ts
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/depend.make
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/flags.make
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/link.txt
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/progress.make
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/qrc_resources.cpp.o
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/qrc_resources.cpp.o.d
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/src/Lp0003Component.cpp.o
+basecamp-app/build/CMakeFiles/lp0003_private_airdrop.dir/src/Lp0003Component.cpp.o.d
+basecamp-app/build/CMakeFiles/progress.marks
+basecamp-app/build/Makefile
+basecamp-app/build/cmake_install.cmake
+basecamp-app/build/liblp0003_private_airdrop.so
+basecamp-app/build/qrc_resources.cpp
+basecamp-app/build/resources.qrc.depends
+runtime probe:
+host=/Applications/LogosBasecamp.app/Contents/MacOS/logos_host
+plugin=basecamp-app/build/liblp0003_private_airdrop.so
+[2026-05-26 22:40:23.669] [critical] Timeout waiting for auth token

@@ -5,7 +5,7 @@ ELFs ready at:
 command=cargo run --manifest-path host/Cargo.toml --bin lp0003-risc0-prove-fixture -- target/lp0003-risc0-final
    Compiling lp0003-private-airdrop-methods v0.1.0 (/Users/evinova-self/Projects/logos-basecamp/lp-0003-private-airdrop/methods)
    Compiling lp0003-private-airdrop-host v0.1.0 (/Users/evinova-self/Projects/logos-basecamp/lp-0003-private-airdrop/host)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.06s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.79s
      Running `host/target/debug/lp0003-risc0-prove-fixture target/lp0003-risc0-final`
 LP-0003 RISC0 proof generation: PASS
 RISC0_DEV_MODE=0
@@ -13,4 +13,4 @@ image_id=ac01d872f551bbaf825740825d7cc1f135e9cd8992cf221b775863abf5062033
 receipt_borsh=target/lp0003-risc0-final/receipt.borsh
 journal_borsh=target/lp0003-risc0-final/journal.borsh
 manifest_txt=target/lp0003-risc0-final/manifest.txt
-proof_generation_seconds=0.001
+proof_generation_seconds=25.978
