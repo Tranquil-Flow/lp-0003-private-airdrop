@@ -37,4 +37,4 @@ cargo run -p lp0003-cli -- safe-lane-evidence --out submission/claims/claims-sum
 
 The safe-lane CI intentionally treats final publication as NO-GO until real evidence is attached. This is a guardrail, not a failure.
 
-See `PLAN.md` for the full spellbook, `docs/SPEC_COMPLIANCE.md` for the evidence matrix, and `docs/FINAL_EVIDENCE_COLLECTION.md` for the final raw-log extraction runbook.
+See `PLAN.md` for the original build spellbook, `docs/REJECTION_RESISTANT_SUBMISSION_PLAN.md` for the current final-submission plan, `docs/SPEC_COMPLIANCE.md` for the evidence matrix, and `docs/FINAL_EVIDENCE_COLLECTION.md` for the final raw-log extraction runbook.

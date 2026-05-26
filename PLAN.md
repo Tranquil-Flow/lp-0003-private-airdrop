@@ -710,7 +710,9 @@ Mitigations:
 
 ## 11. Immediate Next Step
 
-Start with Phase 0 and Phase 1. The first concrete deliverable should be a scaffolded workspace whose validators fail honestly, followed by a pure Rust relation with privacy-boundary tests. Once that moonlit core is correct, the RISC0/LEZ/Basecamp layers can be woven around it without pretending the spell is complete before it is.
+The build has moved beyond the original scaffold/core phases. The current source tree has the safe-lane relation, SDK/CLI, consumer demo, LEZ-shaped state model, native/QML Basecamp package, RISC0 heavy-lane scripts, evidence extractors, final recording preflight, and upstream solution-template simulation.
+
+The remaining work is final evidence collection, not more prose. Follow `docs/REJECTION_RESISTANT_SUBMISSION_PLAN.md` and `docs/FINAL_EVIDENCE_COLLECTION.md` in order: freeze source, regenerate fresh RISC0_DEV_MODE=0 artifacts if any proof-relevant source changed, capture real Basecamp runtime-load logs, capture real LEZ/RISC0 localnet or testnet transaction logs for 2 distributions / 20 unique claims, extract LEZ compute-unit/cost evidence, attach a real narrated demo URL, and only then rerun the final publication gate.
 
 
 ## Added final-proof publication guardrails
@@ -718,3 +720,4 @@ Start with Phase 0 and Phase 1. The first concrete deliverable should be a scaff
 - `scripts/prepare-risc0-proof-artifacts.py` packages real externally generated `RISC0_DEV_MODE=0` receipt/journal/log artifacts into `submission/proof-artifacts/manifest.json` without fabricating evidence.
 - `scripts/validate-proof-artifacts.py` now requires `current_source_sha256`, so stale proof manifests fail after source changes.
 - `scripts/validate-upstream-solution.py` simulates the upstream lambda-prize solution-template checks before any public PR is opened.
+- `docs/REJECTION_RESISTANT_SUBMISSION_PLAN.md` is now the current final-run plan, incorporating the LP-0005 Basecamp rejection lesson, source-bound RISC0 freshness, public/private transcript ambiguity risk, LEZ/CU honesty requirements, and the no-overclaim narrated-demo rule.

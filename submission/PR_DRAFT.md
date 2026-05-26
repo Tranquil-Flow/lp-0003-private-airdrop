@@ -131,7 +131,8 @@ The repo includes a strict safe-lane CI, final-publication checker, evidence ext
 ## Supporting Materials
 
 - `README.md` — current status and quick verification.
-- `PLAN.md` — implementation plan and final gates.
+- `PLAN.md` — original implementation plan and final gates.
+- `docs/REJECTION_RESISTANT_SUBMISSION_PLAN.md` — current final evidence plan incorporating prior Logos Lambda Prize lessons and rejection guardrails.
 - `docs/PROTOCOL.md` — protocol design.
 - `docs/PRIVACY_MODEL.md` and `docs/PRIVATE_INPUT_TRANSCRIPT_MODEL.md` — privacy/threat model.
 - `docs/SPEC_COMPLIANCE.md` — LP-0003 criteria matrix.

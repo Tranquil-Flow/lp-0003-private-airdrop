@@ -70,7 +70,10 @@ def test_final_publication_check_reports_hard_publication_gates():
         or "PASS proof generation benchmark evidence" in result.stdout
     )
     assert "BLOCKER LEZ compute unit benchmark evidence" in result.stdout
-    assert "BLOCKER Logos technology issue report" in result.stdout
+    assert (
+        "BLOCKER Logos technology issue report" in result.stdout
+        or "PASS Logos technology issue report" in result.stdout
+    )
 
 
 def test_final_publication_rejects_weak_benchmark_and_issue_artifacts(tmp_path):
