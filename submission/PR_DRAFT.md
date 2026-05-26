@@ -90,7 +90,7 @@ The final proof lane must provide fresh `RISC0_DEV_MODE=0` proof artifacts for t
 - [x] Rejected invalid Merkle path does not mark claimant as claimed.
 - [x] Duplicate claim returns a deterministic duplicate-nullifier error.
 - [x] Final validators reject safe-lane/mock evidence as final evidence.
-- [ ] RISC0 proof-generation failure path proven against final host/prover lane.
+- [x] RISC0 proof-generation failure path proven against the final host/prover lane: host tests reject unset/dev-only proof mode and invalid Merkle witnesses before invoking the expensive prover.
 
 ### Performance
 
@@ -118,7 +118,7 @@ The SDK and consumer demo provide a clone-and-run integration surface. The Basec
 
 ### Reliability
 
-The design treats failed proofs and duplicate claims as non-success paths and tests that invalid claims do not increment accepted claim state. The final RISC0 host/prover path still needs explicit graceful-failure evidence.
+The design treats failed proofs and duplicate claims as non-success paths and tests that invalid claims do not increment accepted claim state. The final host/prover lane now also has focused tests proving unset `RISC0_DEV_MODE` is rejected and invalid Merkle witnesses fail during host preflight before the expensive prover is invoked.
 
 ### Performance
 

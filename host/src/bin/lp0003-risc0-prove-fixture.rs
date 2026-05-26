@@ -9,7 +9,10 @@ fn main() {
         Ok(artifacts) => {
             println!("LP-0003 RISC0 proof generation: PASS");
             println!("RISC0_DEV_MODE=0");
-            println!("image_id={}", lp0003_private_airdrop_host::claim_proof_image_id_hex());
+            println!(
+                "image_id={}",
+                lp0003_private_airdrop_host::claim_proof_image_id_hex()
+            );
             println!("receipt_borsh={}", artifacts.receipt_borsh.display());
             println!("journal_borsh={}", artifacts.journal_borsh.display());
             println!("manifest_txt={}", artifacts.manifest_txt.display());

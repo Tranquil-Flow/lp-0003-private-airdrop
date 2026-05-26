@@ -54,7 +54,8 @@ pub fn build_guest_input_bytes(input: &ClaimGuestInput) -> Result<Vec<u8>, Strin
 }
 
 pub fn decode_public_journal_bytes(bytes: &[u8]) -> Result<PublicClaimJournal, String> {
-    PublicClaimJournal::try_from_slice(bytes).map_err(|err| format!("decode PublicClaimJournal: {err}"))
+    PublicClaimJournal::try_from_slice(bytes)
+        .map_err(|err| format!("decode PublicClaimJournal: {err}"))
 }
 
 pub fn decode_risc0_committed_journal(bytes: &[u8]) -> Result<PublicClaimJournal, String> {
@@ -161,4 +162,80 @@ fn digest_to_bytes(words: [u32; 8]) -> [u8; 32] {
         out[i * 4..i * 4 + 4].copy_from_slice(&word.to_le_bytes());
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lp0003_core::{
+        claim::{ClaimRequest, ClaimState},
+        merkle::MerkleTree,
+        relation::{verify_claim, ClaimGuestInput},
+        types::{Distribution, EligibleLeaf},
+    };
+    use std::sync::Mutex;
+
+    static RISC0_DEV_MODE_LOCK: Mutex<()> = Mutex::new(());
+
+    fn invalid_merkle_guest_input() -> ClaimGuestInput {
+        let distribution = Distribution::new_fixed_allocation("lp0003-host-failure-fixture", 100);
+        let leaves: Vec<EligibleLeaf> = (0..4)
+            .map(|i| {
+                EligibleLeaf::new(
+                    &distribution.distribution_id,
+                    format!("host-failure-secret-{i}").as_bytes(),
+                    format!("host-failure-salt-{i}").as_bytes(),
+                    100,
+                )
+            })
+            .collect();
+        let tree = MerkleTree::from_leaves(leaves.iter().map(|leaf| leaf.commitment).collect());
+        let distribution = distribution.with_merkle_root(tree.root());
+        let request = ClaimRequest::new(
+            distribution,
+            leaves[0].clone(),
+            tree.proof(3).expect("wrong proof exists"),
+            b"host-failure-recipient-commitment",
+        );
+        ClaimGuestInput { request }
+    }
+
+    #[test]
+    fn prove_refuses_dev_mode_or_unset_mode_before_prover_execution() {
+        let _guard = RISC0_DEV_MODE_LOCK.lock().expect("lock RISC0_DEV_MODE");
+        let previous = std::env::var("RISC0_DEV_MODE").ok();
+        std::env::remove_var("RISC0_DEV_MODE");
+
+        let err = prove(&fixture_guest_input()).expect_err("unset dev mode must be rejected");
+
+        assert!(err.contains("RISC0_DEV_MODE=0"));
+        match previous {
+            Some(value) => std::env::set_var("RISC0_DEV_MODE", value),
+            None => std::env::remove_var("RISC0_DEV_MODE"),
+        }
+    }
+
+    #[test]
+    fn prove_rejects_invalid_guest_input_before_risc0_prover_execution() {
+        let _guard = RISC0_DEV_MODE_LOCK.lock().expect("lock RISC0_DEV_MODE");
+        let previous = std::env::var("RISC0_DEV_MODE").ok();
+        std::env::set_var("RISC0_DEV_MODE", "0");
+        let input = invalid_merkle_guest_input();
+
+        let err = prove(&input).expect_err("invalid Merkle path must fail during host preflight");
+
+        assert!(
+            err.contains("preflight claim relation") && err.contains("invalid Merkle proof"),
+            "unexpected error: {err}"
+        );
+        let mut state = ClaimState::default();
+        let relation_err = verify_claim(&input.request, &mut state)
+            .expect_err("same invalid input should fail at relation layer");
+        assert_eq!(relation_err.to_string(), "invalid Merkle proof");
+        assert_eq!(state.accepted_count(), 0);
+        match previous {
+            Some(value) => std::env::set_var("RISC0_DEV_MODE", value),
+            None => std::env::remove_var("RISC0_DEV_MODE"),
+        }
+    }
 }
