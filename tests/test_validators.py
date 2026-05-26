@@ -425,3 +425,45 @@ def test_final_publication_accepts_explicit_logos_no_issues_attestation_but_keep
             issues.unlink(missing_ok=True)
         else:
             issues.write_text(previous)
+
+
+def test_public_transcript_audit_passes_current_public_artifacts():
+    result = run_script("audit-public-transcripts.py")
+    assert result.returncode == 0, result.stdout
+    assert "LP-0003 public transcript audit: PASS" in result.stdout
+
+
+def test_public_transcript_audit_rejects_private_witness_markers(tmp_path):
+    leaked = tmp_path / "public.log"
+    leaked.write_text("accepted claim for claimant-secret-7 with leaf-salt-7\n")
+
+    result = run_script("audit-public-transcripts.py", "--path", str(leaked))
+
+    assert result.returncode == 1
+    assert "PRIVATE WITNESS MARKER" in result.stdout
+    assert "claimant-secret" in result.stdout
+
+
+def test_private_transcript_model_doc_names_secret_boundary_and_test_gate():
+    text = (ROOT / "docs" / "PRIVATE_INPUT_TRANSCRIPT_MODEL.md").read_text()
+    required = [
+        "Private input / public transcript boundary",
+        "eligible address",
+        "claimant identity secret",
+        "leaf salt",
+        "Merkle path siblings",
+        "Public LEZ transaction payload",
+        "scripts/audit-public-transcripts.py",
+        "must not contain",
+    ]
+    for phrase in required:
+        assert phrase in text
+
+
+def test_ci_metadata_uses_pushable_gitlab_fallback_not_missing_github_only_claim():
+    assert (ROOT / ".gitlab-ci.yml").exists()
+    spec = (ROOT / "docs" / "SPEC_COMPLIANCE.md").read_text()
+    readme = (ROOT / "README.md").read_text()
+    assert ".gitlab-ci.yml" in spec
+    assert ".gitlab-ci.yml" in readme
+    assert "CI safe-lane" in spec

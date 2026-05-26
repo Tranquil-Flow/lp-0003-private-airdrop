@@ -179,6 +179,26 @@ if issue_links or explicit_no_issue:
 else:
     blocker('Logos technology issue report')
 
+# Public transcript privacy gate: final evidence is not publishable if any
+# evaluator-facing artifact contains private witness markers.
+audit_script = ROOT / 'scripts' / 'audit-public-transcripts.py'
+try:
+    import subprocess
+    audit = subprocess.run(
+        ['python3', str(audit_script)],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    if audit.returncode == 0:
+        pass_gate('public transcript privacy audit')
+    else:
+        blocker('public transcript privacy audit')
+except Exception:
+    blocker('public transcript privacy audit')
+
 # CI gate.
 if (ROOT / '.github' / 'workflows').exists() or (ROOT / '.gitlab-ci.yml').exists():
     pass_gate('CI workflow exists')

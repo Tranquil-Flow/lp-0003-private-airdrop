@@ -1,0 +1,15 @@
+stages:
+  - validate
+
+safe-lane:
+  stage: validate
+  image: rust:latest
+  variables:
+    CARGO_TERM_COLOR: always
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends python3 python3-pip python3-pytest ca-certificates
+    - rustup component add rustfmt
+  script:
+    - bash scripts/check-prereqs.sh
+    - bash scripts/ci-safe-lane.sh

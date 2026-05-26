@@ -24,7 +24,7 @@ This matrix mirrors the upstream LP-0003 success criteria. PASS means backed by 
 | SDK/module for Logos modules | PASS (safe-lane SDK) | `sdk/`, `consumer-demo/` |
 | Logos Basecamp app GUI loadable in Basecamp | PARTIAL | Native/QML source package and deterministic `.lgx` exist; runtime load evidence pending |
 | SPEL IDL | PARTIAL | `interfaces/lp0003.idl.json`, `interfaces/lp0003.spel`; hand-written fallback until generated/deployed via real tooling |
-| CI safe-lane | PASS | `.github/workflows/ci.yml`, `scripts/ci-safe-lane.sh` |
+| CI safe-lane | PASS | `.gitlab-ci.yml`, `scripts/ci-safe-lane.sh` |
 
 ## Reliability
 

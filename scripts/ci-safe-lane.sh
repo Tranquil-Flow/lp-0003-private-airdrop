@@ -15,6 +15,9 @@ python3 -m pytest tests -q --ignore=tests/test_ci_safe_lane.py
 printf '\n== Basecamp native source package ==\n'
 python3 scripts/validate-basecamp-native.py
 
+printf '\n== public transcript privacy audit ==\n'
+python3 scripts/audit-public-transcripts.py
+
 printf '\n== local readiness (expected NO-GO until proof artifacts exist) ==\n'
 set +e
 local_output=$(python3 scripts/validate-submission-readiness.py 2>&1)
