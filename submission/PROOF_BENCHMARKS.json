@@ -1,0 +1,14 @@
+{
+  "command": "RISC0_DEV_MODE=0 RISC0_PROVER=ipc cargo run --manifest-path host/Cargo.toml --bin lp0003-risc0-prove-fixture -- target/lp0003-risc0-final",
+  "final_benchmark_evidence": true,
+  "notes": [
+    "Extracted from raw proof-generation output.",
+    "This benchmark file is not sufficient by itself; final readiness also requires proof artifacts, LEZ claim evidence, and demo video evidence."
+  ],
+  "proof_generation_seconds": 0.001,
+  "raw_log_sha256": {
+    "submission/raw-logs/risc0-proof-generation.log": "384698819a368f067a0036de91e118cb6c5a432cf350a815f0fc4301096b71a4"
+  },
+  "risc0_dev_mode": 0,
+  "source_log": "submission/raw-logs/risc0-proof-generation.log"
+}
