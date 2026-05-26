@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_MARKERS = [b"RISC0_DEV_MODE=1", b"safe-lane", b"SAFE_LANE", b"mock proof", b"dev-mode"]
-SOURCE_INCLUDE_PREFIXES = ("core/", "lez-program/", "sdk/", "cli/", "consumer-demo/", "interfaces/", "basecamp-app/")
+SOURCE_INCLUDE_PREFIXES = ("core/", "lez-program/", "sdk/", "cli/", "consumer-demo/", "methods/", "host/", "interfaces/", "basecamp-app/", "scripts/")
 SOURCE_INCLUDE_FILES = {"Cargo.toml", "Cargo.lock", "README.md", "module.json", "demo.sh"}
 
 

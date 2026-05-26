@@ -1,8 +1,9 @@
+use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 
 use crate::crypto::{hash_tagged, Hash32};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, BorshSerialize, BorshDeserialize)]
 pub struct Distribution {
     pub distribution_id: Hash32,
     pub merkle_root: Hash32,
@@ -26,7 +27,7 @@ impl Distribution {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EligibleLeaf {
     pub distribution_id: Hash32,
     pub commitment: Hash32,
@@ -56,7 +57,7 @@ impl EligibleLeaf {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, BorshSerialize, BorshDeserialize)]
 pub struct PublicClaimJournal {
     pub distribution_id: Hash32,
     pub merkle_root: Hash32,

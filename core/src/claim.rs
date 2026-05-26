@@ -1,3 +1,4 @@
+use borsh::{BorshDeserialize, BorshSerialize};
 use std::collections::BTreeSet;
 
 use crate::{
@@ -6,7 +7,7 @@ use crate::{
     types::{Distribution, EligibleLeaf},
 };
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, BorshSerialize, BorshDeserialize)]
 pub struct ClaimRequest {
     pub distribution: Distribution,
     pub leaf: EligibleLeaf,
@@ -35,6 +36,11 @@ impl ClaimRequest {
             recipient_commitment,
         }
     }
+}
+
+#[derive(Debug, Clone, BorshSerialize, BorshDeserialize)]
+pub struct ClaimGuestInput {
+    pub request: ClaimRequest,
 }
 
 #[derive(Debug, Default, Clone)]

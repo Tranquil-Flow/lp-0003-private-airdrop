@@ -115,3 +115,28 @@ fn public_journal_schema_is_stable() {
     assert!(json.get("salt").is_none());
     assert!(json.get("merkle_path").is_none());
 }
+
+#[test]
+fn risc0_guest_input_roundtrip_preserves_public_journal_boundary() {
+    use lp0003_core::relation::ClaimGuestInput;
+
+    let (distribution, leaves, tree) = fixture_distribution();
+    let leaf = leaves[3].clone();
+    let request = ClaimRequest::new(
+        distribution,
+        leaf,
+        tree.proof(3).expect("proof"),
+        b"recipient-commitment-3",
+    );
+    let input = ClaimGuestInput { request };
+
+    let bytes = borsh::to_vec(&input).expect("guest input borsh");
+    let decoded: ClaimGuestInput = borsh::from_slice(&bytes).expect("guest input decode");
+    let mut state = ClaimState::default();
+    let journal = verify_claim(&decoded.request, &mut state).expect("decoded guest input verifies");
+
+    let public_json = serde_json::to_string(&journal).expect("journal json");
+    assert!(!public_json.contains("claimant-secret-3"));
+    assert!(!public_json.contains("leaf-salt-3"));
+    assert!(!public_json.contains("merkle_path"));
+}

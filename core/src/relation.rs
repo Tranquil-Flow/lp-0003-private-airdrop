@@ -1,5 +1,7 @@
 use thiserror::Error;
 
+pub use crate::claim::ClaimGuestInput;
+
 use crate::{
     claim::{ClaimRequest, ClaimState},
     crypto::hash_tagged,

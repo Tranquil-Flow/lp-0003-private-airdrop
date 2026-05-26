@@ -1,23 +1,25 @@
+use borsh::{BorshDeserialize, BorshSerialize};
+
 use crate::crypto::{hash_pair, Hash32};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum Direction {
     Left,
     Right,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ProofStep {
     pub sibling: Hash32,
     pub direction: Direction,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct MerkleProof {
     pub steps: Vec<ProofStep>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct MerkleTree {
     levels: Vec<Vec<Hash32>>,
 }

@@ -347,6 +347,45 @@ def test_prepare_risc0_proof_artifacts_writes_manifest_validated_by_final_schema
     assert "PASS proof artifact manifest hash binding" in validation.stdout
 
 
+def test_prepare_risc0_proof_artifacts_allows_raw_log_already_in_submission_path(tmp_path):
+    raw_log = ROOT / "submission" / "raw-logs" / "risc0-proof-generation.log"
+    raw_log.parent.mkdir(parents=True, exist_ok=True)
+    previous = raw_log.read_text() if raw_log.exists() else None
+    receipt = tmp_path / "receipt.bin"
+    journal = tmp_path / "journal.bin"
+    out_dir = tmp_path / "proof-artifacts"
+    manifest = tmp_path / "manifest.json"
+    receipt.write_bytes(b"RISC0 receipt bytes for same-file raw log packaging")
+    journal.write_bytes(b"public journal bytes only")
+    raw_log.write_text("RISC0_DEV_MODE=0\nproof_generation_seconds=1.5\n")
+    try:
+        result = run_script(
+            "prepare-risc0-proof-artifacts.py",
+            "--receipt",
+            str(receipt),
+            "--journal",
+            str(journal),
+            "--raw-log",
+            str(raw_log),
+            "--image-id",
+            "ab" * 32,
+            "--command",
+            "RISC0_DEV_MODE=0 RISC0_PROVER=ipc cargo run --manifest-path host/Cargo.toml",
+            "--out-dir",
+            str(out_dir),
+            "--manifest",
+            str(manifest),
+        )
+        assert result.returncode == 0, result.stdout
+        data = json.loads(manifest.read_text())
+        assert data["raw_log_path"] == "submission/raw-logs/risc0-proof-generation.log"
+    finally:
+        if previous is None:
+            raw_log.unlink(missing_ok=True)
+        else:
+            raw_log.write_text(previous)
+
+
 def test_prepare_risc0_proof_artifacts_rejects_non_final_command(tmp_path):
     receipt = tmp_path / "receipt.bin"
     journal = tmp_path / "journal.bin"
@@ -467,3 +506,38 @@ def test_ci_metadata_uses_pushable_gitlab_fallback_not_missing_github_only_claim
     assert ".gitlab-ci.yml" in spec
     assert ".gitlab-ci.yml" in readme
     assert "CI safe-lane" in spec
+
+
+def test_risc0_heavy_lane_scaffold_is_present_and_not_safe_lane_claimed():
+    required_files = [
+        "methods/Cargo.toml",
+        "methods/build.rs",
+        "methods/src/lib.rs",
+        "methods/guest/Cargo.toml",
+        "methods/guest/src/bin/claim_proof.rs",
+        "host/Cargo.toml",
+        "host/src/lib.rs",
+        "host/src/bin/lp0003-risc0-prove-fixture.rs",
+        "scripts/run-risc0-heavy-lane.sh",
+    ]
+    for rel in required_files:
+        assert (ROOT / rel).exists(), rel
+
+    guest = (ROOT / "methods" / "guest" / "src" / "bin" / "claim_proof.rs").read_text()
+    host = (ROOT / "host" / "src" / "lib.rs").read_text()
+    script = (ROOT / "scripts" / "run-risc0-heavy-lane.sh").read_text()
+    assert "ClaimGuestInput" in guest
+    assert "env::commit(&journal_bytes)" in guest
+    assert "RISC0_DEV_MODE=0" in host
+    assert "cargo risczero build --manifest-path methods/Cargo.toml" in script
+    assert "proof_generation_seconds=" in script
+    assert "extract-proof-benchmark.py" in script
+    assert "prepare-risc0-proof-artifacts.py" in script
+
+
+def test_proof_artifact_source_digest_includes_risc0_heavy_lane_sources():
+    for script_name in ["prepare-risc0-proof-artifacts.py", "validate-proof-artifacts.py"]:
+        text = (ROOT / "scripts" / script_name).read_text()
+        assert '"methods/"' in text
+        assert '"host/"' in text
+        assert '"scripts/"' in text

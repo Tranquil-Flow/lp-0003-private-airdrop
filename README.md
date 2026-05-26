@@ -12,8 +12,9 @@ This repository is being built for Logos Lambda Prize LP-0003. The current tree 
 4. SPEL/IDL fallback artifacts under `interfaces/`.
 5. Native/QML Basecamp source package under `basecamp-app/` with deterministic `.lgx` packaging.
 6. Evidence extraction/helpers for final Basecamp runtime-load logs, LEZ/RISC0 claim logs, proof artifact hash validation, and narrated-video attachment.
-7. Strict final-publication gates that reject safe-lane claim counts, source-package-only Basecamp evidence, bool-only proof manifests, tampered raw-log hashes, and private witness markers in public transcript artifacts as final evidence.
-8. Pushable safe-lane CI metadata via `.gitlab-ci.yml` plus local `scripts/ci-safe-lane.sh`.
+7. Repository-owned RISC Zero heavy lane (`methods/`, `host/`, `scripts/run-risc0-heavy-lane.sh`) so final proof artifacts can be generated from current source instead of hand-waved.
+8. Strict final-publication gates that reject safe-lane claim counts, source-package-only Basecamp evidence, bool-only proof manifests, tampered raw-log hashes, and private witness markers in public transcript artifacts as final evidence.
+9. Pushable safe-lane CI metadata via `.gitlab-ci.yml` plus local `scripts/ci-safe-lane.sh`.
 
 ## What is still final-blocking
 

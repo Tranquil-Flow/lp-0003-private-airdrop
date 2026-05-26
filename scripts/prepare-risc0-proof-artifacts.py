@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_MARKERS = [b"RISC0_DEV_MODE=1", b"safe-lane", b"SAFE_LANE", b"mock proof", b"dev-mode"]
-SOURCE_INCLUDE_PREFIXES = ("core/", "lez-program/", "sdk/", "cli/", "consumer-demo/", "interfaces/", "basecamp-app/")
+SOURCE_INCLUDE_PREFIXES = ("core/", "lez-program/", "sdk/", "cli/", "consumer-demo/", "methods/", "host/", "interfaces/", "basecamp-app/", "scripts/")
 SOURCE_INCLUDE_FILES = {"Cargo.toml", "Cargo.lock", "README.md", "module.json", "demo.sh"}
 
 
@@ -77,6 +77,14 @@ def reject_forbidden(path: Path, label: str) -> int | None:
     return None
 
 
+def copy_unless_same_file(src: Path, dst: Path) -> None:
+    src_resolved = src.resolve()
+    dst_resolved = dst.resolve()
+    if src_resolved == dst_resolved:
+        return
+    shutil.copyfile(src, dst)
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         description="Package real RISC0_DEV_MODE=0 LP-0003 proof artifacts into the final hash-bound submission schema."
@@ -114,8 +122,8 @@ def main(argv: list[str]) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     receipt_out = out_dir / "claim.receipt"
     journal_out = out_dir / "claim.journal"
-    shutil.copyfile(args.receipt, receipt_out)
-    shutil.copyfile(args.journal, journal_out)
+    copy_unless_same_file(args.receipt, receipt_out)
+    copy_unless_same_file(args.journal, journal_out)
 
     raw_log_sha256 = {}
     raw_log_out = None
@@ -123,7 +131,7 @@ def main(argv: list[str]) -> int:
         raw_dir = ROOT / "submission" / "raw-logs"
         raw_dir.mkdir(parents=True, exist_ok=True)
         raw_log_out = raw_dir / "risc0-proof-generation.log"
-        shutil.copyfile(args.raw_log, raw_log_out)
+        copy_unless_same_file(args.raw_log, raw_log_out)
         raw_log_sha256[display_path(raw_log_out)] = sha256_file(raw_log_out)
 
     digest, source_files = source_digest()
