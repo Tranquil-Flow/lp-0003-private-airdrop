@@ -1,6 +1,6 @@
 {
   "package": "dist/lp0003-private-airdrop.lgx",
-  "sha256": "66f6811d1a4175a264460fbb89f63058b7b95e18440d9e9afcb3d15e08f36eaf",
+  "sha256": "4c2fab9c23909124df70717e1530c9f0e39413617f344283721abb132184917b",
   "status": "source-package-only-not-load-evidence",
   "final_basecamp_load_evidence": false,
   "included_files": [

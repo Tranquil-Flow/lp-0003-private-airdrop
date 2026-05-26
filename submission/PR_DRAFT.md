@@ -94,7 +94,7 @@ The final proof lane must provide fresh `RISC0_DEV_MODE=0` proof artifacts for t
 
 ### Performance
 
-- [ ] Proof-generation benchmark attached in `submission/PROOF_BENCHMARKS.json`.
+- [x] Proof-generation benchmark attached in `submission/PROOF_BENCHMARKS.json` and fresh proof artifacts attached in `submission/proof-artifacts/`.
 - [ ] LEZ compute-unit benchmark attached in `submission/LEZ_COST_BENCHMARKS.json`.
 
 ### Supportability

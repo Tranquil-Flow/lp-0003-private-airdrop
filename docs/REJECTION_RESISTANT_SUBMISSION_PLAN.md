@@ -105,17 +105,16 @@ The narration should explicitly say what is live, what is pre-generated but hash
 - Final recording preflight and upstream solution-template simulation.
 - Strict final-publication checker.
 
-### Current final blockers, as of this plan
+### Current final blockers, as of the latest M4 Pro evidence run
 
-`python3 scripts/final-publication-check.py` currently reports these blockers after the plan/docs update:
+`python3 scripts/final-publication-check.py` currently reports these blockers after the latest M4 Pro run:
 
 1. Narrated demo video URL.
 2. Basecamp runtime-load evidence.
 3. Real LEZ/RISC0 two-distribution / twenty-claim evidence.
-4. Fresh RISC0_DEV_MODE=0 proof artifacts.
-5. LEZ compute-unit benchmark evidence.
+4. LEZ compute-unit benchmark evidence.
 
-The proof-generation benchmark gate currently passes locally, but the proof manifest is intentionally source-bound. Because publication docs/README changed during plan completion, the proof artifacts must be regenerated before final publication. This is the desired fail-closed behavior.
+The fresh `RISC0_DEV_MODE=0` proof-artifact gate now passes with `submission/proof-artifacts/manifest.json`, `receipt.borsh`, and `journal.borsh` copied from the M4 Pro heavy lane. Regenerate it again after any proof-relevant source change; the validator is source-digest-bound and will fail closed if stale.
 
 ## 4. Final evidence collection sequence
 
