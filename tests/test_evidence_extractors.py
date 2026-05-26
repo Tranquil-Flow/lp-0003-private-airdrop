@@ -26,7 +26,9 @@ def restore_file(path: Path, previous: str | None):
 
 def test_extract_basecamp_load_evidence_rejects_install_only_log(tmp_path):
     evidence_path = ROOT / "submission" / "BASECAMP_LOAD_EVIDENCE.json"
+    canonical_log = ROOT / "submission" / "raw-logs" / "basecamp-runtime-load.log"
     previous = evidence_path.read_text() if evidence_path.exists() else None
+    previous_log = canonical_log.read_text() if canonical_log.exists() else None
     package = ROOT / "dist" / "lp0003-private-airdrop.lgx"
     assert package.exists(), "safe-lane package fixture should exist"
     raw_log = tmp_path / "basecamp-install-only.log"
@@ -41,16 +43,20 @@ def test_extract_basecamp_load_evidence_rejects_install_only_log(tmp_path):
 
         assert result.returncode == 1
         assert "install/package-only evidence is not runtime load evidence" in result.stdout
-        if evidence_path.exists():
-            data = json.loads(evidence_path.read_text())
-            assert data.get("final_load_evidence") is not True
+        if previous is None:
+            assert not evidence_path.exists()
+        else:
+            assert evidence_path.read_text() == previous
     finally:
         restore_file(evidence_path, previous)
+        restore_file(canonical_log, previous_log)
 
 
 def test_extract_basecamp_load_evidence_accepts_runtime_load_log(tmp_path):
     evidence_path = ROOT / "submission" / "BASECAMP_LOAD_EVIDENCE.json"
+    canonical_log = ROOT / "submission" / "raw-logs" / "basecamp-runtime-load.log"
     previous = evidence_path.read_text() if evidence_path.exists() else None
+    previous_log = canonical_log.read_text() if canonical_log.exists() else None
     raw_log = tmp_path / "basecamp-runtime.log"
     raw_log.write_text(
         "Basecamp runtime loaded component lp0003-private-airdrop\n"
@@ -72,6 +78,7 @@ def test_extract_basecamp_load_evidence_accepts_runtime_load_log(tmp_path):
         assert data["package_sha256"]
     finally:
         restore_file(evidence_path, previous)
+        restore_file(canonical_log, previous_log)
 
 
 def test_extract_lez_claim_evidence_rejects_safe_lane_and_bare_hash_labels(tmp_path):
@@ -179,6 +186,9 @@ def test_attach_final_demo_video_updates_solution_draft_without_marking_evidence
             "BLOCKER fresh RISC0_DEV_MODE=0 proof artifacts" in final.stdout
             or "PASS fresh RISC0_DEV_MODE=0 proof artifacts" in final.stdout
         )
-        assert "BLOCKER 2 distributions / 20 unique claims evidence" in final.stdout
+        assert (
+            "BLOCKER 2 distributions / 20 unique claims evidence" in final.stdout
+            or "PASS 2 distributions / 20 unique claims evidence" in final.stdout
+        )
     finally:
         pr_draft.write_text(before)

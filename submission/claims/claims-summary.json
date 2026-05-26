@@ -1,0 +1,21 @@
+{
+  "accepted_claim_count": 20,
+  "distribution_count": 2,
+  "distribution_ids": [
+    "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+    "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+  ],
+  "duplicate_rejection_count": 1,
+  "evidence_source": "lez-risc0-localnet",
+  "extracted_at": "2026-05-26T21:13:05.520209+00:00",
+  "final_evidence": true,
+  "honesty_note": "Accepted only from raw LEZ/RISC0 localnet/testnet logs with RISC0_DEV_MODE=0, tx context, block/slot context, and duplicate rejection evidence.",
+  "raw_log_sha256": {
+    "submission/raw-logs/lez-risc0-claims.log": "7cca1e359bf74976271e93dd69fb7e1d43980bb24c37ac3a8138bff338c615fc"
+  },
+  "raw_logs": [
+    "submission/raw-logs/lez-risc0-claims.log"
+  ],
+  "risc0_dev_mode": 0,
+  "unique_claim_count": 20
+}

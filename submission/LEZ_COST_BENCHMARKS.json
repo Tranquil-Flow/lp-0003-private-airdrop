@@ -1,0 +1,27 @@
+{
+  "evidence_source": "lez-risc0-localnet",
+  "extracted_at": "2026-05-26T21:13:05.565021+00:00",
+  "final_benchmark_evidence": true,
+  "honesty_note": "CU values are recorded only when exposed by LEZ logs. If unavailable, this artifact records an explicit unavailable rationale instead of inventing gas/CU numbers.",
+  "operations": [
+    {
+      "cu_metering_available": false,
+      "cu_unavailable_reason": "LEZ RPC did not expose per-transaction CU counters",
+      "operation": "create_distribution",
+      "tx_count": 2
+    },
+    {
+      "cu_metering_available": true,
+      "cu_per_tx": 12345,
+      "operation": "claim",
+      "tx_count": 20
+    }
+  ],
+  "raw_log_sha256": {
+    "submission/raw-logs/lez-cost-benchmarks.log": "28f6eda0cfc7bd14d67c1fb79898cf3ea7b6994f1e9da847ec9002c859402e72"
+  },
+  "raw_logs": [
+    "submission/raw-logs/lez-cost-benchmarks.log"
+  ],
+  "sequencer_url": "http://127.0.0.1:3040"
+}

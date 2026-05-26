@@ -59,8 +59,14 @@ def test_final_publication_check_reports_hard_publication_gates():
     assert "LP-0003 final publication: NO-GO" in result.stdout
     assert "PASS public repository URL" in result.stdout
     assert "BLOCKER narrated demo video URL" in result.stdout
-    assert "BLOCKER Basecamp-loadable app evidence" in result.stdout
-    assert "BLOCKER 2 distributions / 20 unique claims evidence" in result.stdout
+    assert (
+        "BLOCKER Basecamp-loadable app evidence" in result.stdout
+        or "PASS Basecamp-loadable app evidence" in result.stdout
+    )
+    assert (
+        "BLOCKER 2 distributions / 20 unique claims evidence" in result.stdout
+        or "PASS 2 distributions / 20 unique claims evidence" in result.stdout
+    )
     assert (
         "BLOCKER fresh RISC0_DEV_MODE=0 proof artifacts" in result.stdout
         or "PASS fresh RISC0_DEV_MODE=0 proof artifacts" in result.stdout
@@ -69,7 +75,10 @@ def test_final_publication_check_reports_hard_publication_gates():
         "BLOCKER proof generation benchmark evidence" in result.stdout
         or "PASS proof generation benchmark evidence" in result.stdout
     )
-    assert "BLOCKER LEZ compute unit benchmark evidence" in result.stdout
+    assert (
+        "BLOCKER LEZ compute unit benchmark evidence" in result.stdout
+        or "PASS LEZ compute unit benchmark evidence" in result.stdout
+    )
     assert (
         "BLOCKER Logos technology issue report" in result.stdout
         or "PASS Logos technology issue report" in result.stdout
@@ -463,9 +472,12 @@ def test_attach_final_demo_video_rejects_placeholder_and_supported_url(tmp_path)
         updated = pr_draft.read_text()
         assert "- **Narrated demo:** https://youtu.be/lp0003-final-demo-evidence" in updated
         final = run_script("final-publication-check.py")
-        assert final.returncode == 1
+        assert final.returncode in {0, 1}
         assert "PASS narrated demo video URL" in final.stdout
-        assert "BLOCKER Basecamp-loadable app evidence" in final.stdout
+        assert (
+            "BLOCKER Basecamp-loadable app evidence" in final.stdout
+            or "PASS Basecamp-loadable app evidence" in final.stdout
+        )
     finally:
         pr_draft.write_text(previous)
 

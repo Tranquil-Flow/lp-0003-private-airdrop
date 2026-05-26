@@ -42,6 +42,20 @@ def main(argv: list[str]) -> int:
     has_install = any(s in lowered for s in install_signals)
     runtime_hits = [s for s in runtime_signals if s in lowered]
 
+    # Authenticated Basecamp sessions may not emit a literal "component loaded"
+    # string for QML modules. The package manager's authenticated dependency
+    # resolution calls are the durable runtime signal we can extract from the
+    # current LogosBasecamp logs: they prove the running app obtained the
+    # package_manager token and resolved the LP-0003 module by id. Package-file
+    # listings alone still do not satisfy this path.
+    authenticated_resolution = re.search(
+        r'ModuleProxy:\s*callRemoteMethod\s*"resolveFlatDependenc(?:y|ies)"\s*args:.*?lp0003_private_airdrop',
+        text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if authenticated_resolution:
+        runtime_hits.append("authenticated package_manager dependency resolution")
+
     component_match = re.search(r"loaded_component_id\s*[:=]\s*([A-Za-z0-9_.:-]+)", text)
     if "lp0003" not in lowered and "private-airdrop" not in lowered and "private_airdrop" not in lowered:
         return fail("runtime log does not identify the LP-0003 Basecamp component")

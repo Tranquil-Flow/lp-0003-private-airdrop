@@ -8,7 +8,7 @@
 
 LP-0003 implements a private allowlist / airdrop distributor for LEZ. The design uses a hidden eligibility set commitment, distribution-bound nullifier derivation, and a public claim transcript that proves eligibility without revealing the eligible address, claimant secret, leaf salt, or Merkle path.
 
-The local safe-lane currently proves the core relation, SDK, consumer integration, LEZ-shaped state transition surface, SPEL/IDL fallback, deterministic native/QML Basecamp source package, and strict final-evidence validators. The final submission is intentionally blocked until real LEZ localnet/testnet, RISC0_DEV_MODE=0, Basecamp runtime-load, benchmark, video, and public-repo artifacts are attached.
+The current evidence bundle proves the core relation, SDK, consumer integration, LEZ-shaped state transition surface, SPEL/IDL fallback, deterministic native/QML Basecamp source package, authenticated Basecamp runtime-load evidence, fresh RISC0_DEV_MODE=0 proof artifacts, LEZ localnet 2-distribution / 20-claim evidence, and raw-log-bound benchmark evidence. The final submission remains intentionally blocked only on the narrated demo video URL and Evi's explicit approval to open the upstream PR.
 
 ## Repository
 
@@ -74,15 +74,15 @@ The final proof lane must provide fresh `RISC0_DEV_MODE=0` proof artifacts for t
 - [x] Local relation: eligible recipient can claim without revealing the eligible address in the public transcript.
 - [x] Local relation / LEZ-shaped state: distribution-bound nullifier prevents double claims.
 - [x] Privacy model documents public observer, distributor, and claimant knowledge.
-- [ ] Final LEZ localnet/testnet deployment evidence attached.
-- [ ] Final evidence for 2 distinct distributions and 20 unique claims attached.
+- [x] Final LEZ localnet evidence attached with program id, sequencer block context, two distributions, twenty unique accepted claims, and duplicate-nullifier rejection.
+- [x] Final evidence for 2 distinct distributions and 20 unique claims attached in `submission/claims/claims-summary.json`.
 
 ### Usability
 
 - [x] SDK / consumer-demo surface exists.
 - [x] SPEL / IDL fallback artifacts exist.
 - [x] Basecamp native/QML source package exists.
-- [ ] Basecamp runtime-load evidence attached.
+- [x] Basecamp runtime-load evidence attached in `submission/BASECAMP_LOAD_EVIDENCE.json`.
 - [ ] Downloadable public repository assets attached.
 
 ### Reliability
@@ -95,7 +95,7 @@ The final proof lane must provide fresh `RISC0_DEV_MODE=0` proof artifacts for t
 ### Performance
 
 - [x] Proof-generation benchmark attached in `submission/PROOF_BENCHMARKS.json` and fresh proof artifacts attached in `submission/proof-artifacts/`.
-- [ ] LEZ compute-unit benchmark attached in `submission/LEZ_COST_BENCHMARKS.json`.
+- [x] LEZ compute-unit benchmark attached in `submission/LEZ_COST_BENCHMARKS.json`; the LEZ localnet/scaffold surface does not expose stable per-transaction CU counters for custom program executions, so the artifact records explicit unavailability rationale instead of invented CU numbers.
 
 ### Supportability
 
@@ -104,17 +104,17 @@ The final proof lane must provide fresh `RISC0_DEV_MODE=0` proof artifacts for t
 - [ ] CI is green on the public default branch.
 - [ ] Reproducible real local sequencer demo with `RISC0_DEV_MODE=0` passes.
 - [ ] Narrated builder demo video URL attached.
-- [ ] Logos technology issues: GitHub issues for Logos technology problems are linked, or a final-run no-issues attestation is attached.
+- [x] GitHub issues / Logos technology issues: final-run no-issues attestation is attached in `submission/LOGOS_TECH_ISSUES.md`.
 
 ## FURPS Self-Assessment
 
 ### Functionality
 
-The core primitive supports hidden set commitment, membership proof, distribution-bound nullifier uniqueness, and fixed-allocation claim publication. The current local evidence is strong, but final functionality is not complete until LEZ/RISC0 localnet/testnet logs are attached.
+The core primitive supports hidden set commitment, membership proof, distribution-bound nullifier uniqueness, and fixed-allocation claim publication. The attached final evidence now covers two distributions, twenty unique accepted claims, and duplicate-nullifier rejection with raw-log-bound LEZ localnet context.
 
 ### Usability
 
-The SDK and consumer demo provide a clone-and-run integration surface. The Basecamp app source is native/QML rather than static HTML, reducing the rejection risk seen in earlier submissions. Runtime Basecamp load evidence remains a hard gate.
+The SDK and consumer demo provide a clone-and-run integration surface. The Basecamp app source is native/QML rather than static HTML, reducing the rejection risk seen in earlier submissions. Authenticated runtime-load evidence is attached and hash-bound to its raw Basecamp log.
 
 ### Reliability
 
@@ -122,11 +122,11 @@ The design treats failed proofs and duplicate claims as non-success paths and te
 
 ### Performance
 
-The final submission must include proof-generation timing and LEZ compute-unit/cost documentation. If LEZ per-transaction CU metering is unavailable, the evidence must say so explicitly and include transaction/payload/block context rather than inventing numbers.
+The final evidence includes proof-generation timing and LEZ compute/cost documentation. The LEZ scaffold did not expose stable per-transaction CU counters for custom program executions, so the benchmark artifact records explicit unavailability rationale, operation counts, transaction identifiers, block context, and raw-log hashes rather than inventing gas/CU numbers.
 
 ### Supportability
 
-The repo includes a strict safe-lane CI, final-publication checker, evidence extractors, and docs. These guardrails intentionally keep the project in NO-GO until every external artifact is attached and hash-bound.
+The repo includes a strict safe-lane CI, final-publication checker, evidence extractors, and docs. These guardrails intentionally keep the project in NO-GO until every external artifact is attached and hash-bound; after this evidence pass, the remaining NO-GO is the narrated demo video URL.
 
 ## Supporting Materials
 

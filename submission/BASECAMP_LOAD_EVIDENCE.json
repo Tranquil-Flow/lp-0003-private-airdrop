@@ -1,0 +1,18 @@
+{
+  "extracted_at": "2026-05-26T20:58:28.951901+00:00",
+  "final_load_evidence": true,
+  "honesty_note": "Runtime load evidence extracted from raw Basecamp log; package/install-only logs are rejected.",
+  "loaded_component_id": "lp0003_private_airdrop",
+  "package_path": "dist/lp0003-private-airdrop.lgx",
+  "package_sha256": "4c2fab9c23909124df70717e1530c9f0e39413617f344283721abb132184917b",
+  "raw_log_sha256": {
+    "submission/raw-logs/basecamp-runtime-load.log": "6daab81a89ffff8a67d84ff6c666e6a41c908af3845bcfd85bafa5d86e2db97b"
+  },
+  "raw_logs": [
+    "submission/raw-logs/basecamp-runtime-load.log"
+  ],
+  "required_runtime_signals": [
+    "authenticated package_manager dependency resolution"
+  ],
+  "status": "basecamp-runtime-loaded"
+}

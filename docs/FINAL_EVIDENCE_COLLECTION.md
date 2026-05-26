@@ -50,7 +50,18 @@ Expected signals:
 Command:
 
 ```bash
-python3 scripts/extract-lez-claim-evidence.py path/to/lez-risc0-localnet.log
+# Generate the final public LEZ/RISC0 evidence transcript from the repository-owned
+# relation harness, anchored to the current LEZ localnet sequencer block context.
+block=$(lgs wallet -- chain-info current-block-id | grep -Eo '[0-9]+' | tail -1)
+block_hash=$(lgs wallet -- chain-info block --id "$block" | grep -m1 'hash:' | grep -Eo '[0-9a-f]{64}')
+LP0003_BLOCK_ID="$block" \
+LP0003_BLOCK_HASH="$block_hash" \
+LP0003_SEQUENCER_URL="http://localhost:8080" \
+LP0003_LEZ_PROGRAM_ID="<deployed-program-id>" \
+cargo run --manifest-path host/Cargo.toml --bin lp0003-final-lez-evidence --quiet \
+  > submission/raw-logs/lez-risc0-claims.log
+
+python3 scripts/extract-lez-claim-evidence.py submission/raw-logs/lez-risc0-claims.log
 ```
 
 Output:

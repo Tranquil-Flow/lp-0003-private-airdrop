@@ -1,0 +1,12 @@
+LP-0003 Basecamp authenticated runtime evidence
+evidence_source: LogosBasecamp.app authenticated package_manager runtime log
+loaded_component_id: lp0003_private_airdrop
+status_observed: authenticated Basecamp package_manager resolved LP-0003 module dependencies
+package installed: /Users/evinova-self/Library/Application Support/Logos/LogosBasecamp/plugins/lp0003_private_airdrop
+installed_file: metadata.json sha256=428a42a6353e6c57658b3dba853178c2f25c2defee7c837996344a4826e82785
+installed_file: manifest.json sha256=301a0a48441e8f873d8721127ceb31d6af409214f58f6a950953722aac758a6a
+installed_file: liblp0003_private_airdrop.dylib sha256=33df2d03b41215da65155f35d3ef4a19e1a72ca6a895eab0da215c0ca0394da7
+installed_file: qml/Main.qml sha256=f0d91b66c603588664151714560cd98e8a08bdf55c3dad6a242e9a91d650c2b2
+--- raw authenticated Basecamp log excerpts ---
+[2026-05-26 21:57:03.633] [info] [package_manager] ModuleProxy: callRemoteMethod "resolveFlatDependencies" args: QList(QVariant(QString, "lp0003_private_airdrop"), QVariant(bool, true))
+[2026-05-26 21:57:03.633] [info] [package_manager] ModuleProxy: callRemoteMethod "resolveFlatDependents" args: QList(QVariant(QString, "lp0003_private_airdrop"), QVariant(bool, true))

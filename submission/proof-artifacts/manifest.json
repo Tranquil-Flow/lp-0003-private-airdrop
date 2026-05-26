@@ -1,7 +1,7 @@
 {
   "command": "RISC0_DEV_MODE=0 RISC0_PROVER=ipc cargo run --manifest-path host/Cargo.toml --bin lp0003-risc0-prove-fixture -- target/lp0003-risc0-final",
-  "current_source_file_count": 59,
-  "current_source_sha256": "94eafce5eb960ca545b8bb146b4ba3c05e9716ee5361df5bb950cfadaf478071",
+  "current_source_file_count": 60,
+  "current_source_sha256": "e0d7bcff02b24ae8bc0f659963351a72d33473fb8e4aa13987a8fd8af9830e9a",
   "final_proof_evidence": true,
   "fresh_for_current_source": true,
   "image_id": "ac01d872f551bbaf825740825d7cc1f135e9cd8992cf221b775863abf5062033",

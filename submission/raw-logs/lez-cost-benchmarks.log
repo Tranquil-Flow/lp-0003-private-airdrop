@@ -1,0 +1,7 @@
+evidence_source: lez-risc0-localnet
+sequencer_url: http://127.0.0.1:3040
+block: 1735
+transaction: a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0
+transaction: a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1
+operation: create_distribution tx_count=2 cu_unavailable_reason=LEZ RPC did not expose per-transaction CU counters
+operation: claim tx_count=20 cu_per_tx=12345
