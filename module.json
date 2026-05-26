@@ -1,0 +1,11 @@
+{
+  "name": "lp-0003-private-airdrop",
+  "displayName": "LP-0003 Private Airdrop",
+  "version": "0.1.0",
+  "repository": "https://github.com/Tranquil-Flow/lp-0003-private-airdrop",
+  "status": "safe-lane-partial-final-no-go",
+  "basecamp": {
+    "loadable": false,
+    "package": "dist/lp0003-private-airdrop.lgx"
+  }
+}

@@ -1,0 +1,42 @@
+// LP-0003 Private Allowlist / Airdrop Distributor SPEL surface
+// Status: hand-written fallback interface until generated from live LEZ program source.
+// Honesty: this file is an interface artifact, not deployment evidence.
+
+program lp0003_private_airdrop version 0.1.0;
+
+account DistributionAccount {
+  distribution_id: bytes32,
+  merkle_root: bytes32,
+  fixed_allocation: u64,
+  allocation_policy_hash: bytes32,
+  claimed_count: u64,
+}
+
+account ClaimNullifierAccount {
+  distribution_id: bytes32,
+  nullifier: bytes32,
+  recipient_commitment: bytes32,
+  proof_context: bytes32,
+}
+
+public instruction create_distribution(
+  distribution_id: bytes32,
+  merkle_root: bytes32,
+  fixed_allocation: u64,
+  allocation_policy_hash: bytes32,
+);
+
+private instruction claim(
+  distribution_id: bytes32,
+  merkle_root: bytes32,
+  nullifier: bytes32,
+  recipient_commitment: bytes32,
+  allocation: u64,
+  proof_context: bytes32,
+  receipt_sha256: bytes32,
+  journal_sha256: bytes32,
+  receipt_journal_commitment: bytes32,
+);
+
+public instruction query_distribution(distribution_id: bytes32);
+public instruction query_claim_nullifier(distribution_id: bytes32, nullifier: bytes32);

@@ -1,0 +1,15 @@
+{
+  "package": "dist/lp0003-private-airdrop.lgx",
+  "sha256": "66f6811d1a4175a264460fbb89f63058b7b95e18440d9e9afcb3d15e08f36eaf",
+  "status": "source-package-only-not-load-evidence",
+  "final_basecamp_load_evidence": false,
+  "included_files": [
+    "CMakeLists.txt",
+    "include/IComponent.h",
+    "metadata.json",
+    "qml/Main.qml",
+    "resources.qrc",
+    "src/Lp0003Component.cpp",
+    "src/Lp0003Component.h"
+  ]
+}

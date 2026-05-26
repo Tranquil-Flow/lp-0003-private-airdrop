@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/lp0003">
+    <file>qml/Main.qml</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,21 @@
+[workspace]
+members = [
+    "core",
+    "sdk",
+    "consumer-demo",
+    "lez-program",
+    "cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hex = "0.4"
+thiserror = "2"

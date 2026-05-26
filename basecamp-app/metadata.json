@@ -1,0 +1,9 @@
+{
+  "id": "lp0003-private-airdrop",
+  "name": "LP-0003 Private Airdrop",
+  "version": "0.1.0",
+  "kind": "logos-basecamp-native-qml",
+  "status": "source-package-only-not-load-evidence",
+  "entrypoint": "qml/Main.qml",
+  "honesty": "This package is a native/QML source package scaffold. It is not final Basecamp runtime load evidence until submission/BASECAMP_LOAD_EVIDENCE.json contains a real load log."
+}
