@@ -1,6 +1,6 @@
 # LP-0003 Protocol
 
-Status: safe-lane protocol specification; final RISC0/LEZ evidence pending.
+Status: protocol specification with final non-demo RISC0/LEZ evidence attached; narrated demo video pending.
 
 ## Threshold Proof Scheme
 
@@ -34,7 +34,7 @@ The LEZ-shaped wrapper models:
 - `claim`
 - read/query surfaces through SPEL/IDL fallback artifacts
 
-The current local wrapper binds `receipt_sha256` and `journal_sha256` via `receipt_journal_commitment`. Final LEZ evidence must come from localnet/testnet logs, not this local model alone.
+The current wrapper binds `receipt_sha256` and `journal_sha256` via `receipt_journal_commitment`. Final non-demo LEZ/RISC0 evidence is attached under `submission/claims/claims-summary.json` and hash-bound to the raw localnet transcript.
 
 ## Security Assumptions
 
@@ -46,8 +46,8 @@ The current local wrapper binds `receipt_sha256` and `journal_sha256` via `recei
 ## Known Limitations
 
 - Fixed allocation is chosen for final acceptance and privacy simplicity; per-leaf variable allocations are future work because they can leak allocation classes.
-- Current repository has safe-lane relation/SDK/LEZ-shaped tests, but no final `RISC0_DEV_MODE=0` proof artifact yet.
-- Current Basecamp package is deterministic source/package evidence, not runtime load evidence.
+- Current repository has safe-lane relation/SDK/LEZ-shaped tests plus final `RISC0_DEV_MODE=0` proof artifacts for the current source. Regenerate the proof manifest/artifacts after proof-relevant source changes.
+- Basecamp evidence is attached as authenticated runtime-load evidence; if Basecamp auth/runtime behavior changes, regenerate `submission/BASECAMP_LOAD_EVIDENCE.json` from a new raw log.
 
 ## Integration Guide
 
